@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: oauth2-service
+
+server:
+  context-path: /oauth2
+  port: 7090
+
+# 本地环境
+---
+spring:
+  profiles: local
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/edu_operation_platform?useSSL=false
+    username: root
+    password: Anowls@38
+
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 400
+#
+##  redis:
+##    cluster:
+##      nodes: 192.168.99.148:6379,192.168.99.148:6380,192.168.99.148:6381,192.168.99.148:6382,192.168.99.148:6383,192.168.99.148:6384
+##    timeout: 3000
+#
+
+
+
+#security:
+#  oauth2:
+#    resource:
+#      filter-order: 3
+#
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance-id:${server.port:8080}}
+#    lease-renewal-interval-in-seconds: 15
+#    lease-expiration-duration-in-seconds: 30
+#    health-check-url-path: ${server.context-path}/health
+#    status-page-url-path: ${server.context-path}/info
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka
+#mybatis:
+#  mapper-locations: classpath*:mapper/*Mapper.xml
+#  configuration:
+#    database-id: MySQL
+#
+token:
+  access: 100
+  refresh: 200

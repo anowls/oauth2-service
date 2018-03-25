@@ -1,0 +1,574 @@
+<?xml version="1.0"?>
+<ruleset name="Custom ruleset"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>
+        自定义 PMD Rules
+        https://pmd.github.io/pmd-6.0.0/pmd_rules_java.html
+        https://github.com/pmd/pmd/wiki/Rule-Categories
+    </description>
+
+    <!-- region Best Practices -->
+
+    <!-- 硬编码 IP 地址是不好的实践 -->
+    <rule ref="rulesets/java/basic.xml/AvoidUsingHardCodedIP"/>
+    <!-- 对于方法的执行结果要有正确的逻辑检查 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_bestpractices.html#checkresultset -->
+    <rule ref="rulesets/java/basic.xml/CheckResultSet"/>
+
+    <!-- 抽象类不包含任何抽象方法 -->
+    <rule ref="rulesets/java/design.xml/AbstractClassWithoutAbstractMethod"/>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_bestpractices.html#accessormethodgeneration -->
+    <rule ref="rulesets/java/design.xml/AccessorMethodGeneration"/>
+    <!-- 替换传入参数的值是不推荐的，使用临时本地变量代替 -->
+    <rule ref="rulesets/java/design.xml/AvoidReassigningParameters"/>
+    <!-- 避免在接口中定义常量 -->
+    <rule ref="rulesets/java/design.xml/ConstantsInInterface"/>
+    <!-- Switch 中 Default 语句应该放到最后 -->
+    <rule ref="rulesets/java/design.xml/DefaultLabelNotLastInSwitchStmt"/>
+    <!-- 在 equalsIgnoreCase 中将文字放在第一个参数可以避免第二个参数为 Null 时抛出 NullPointerExceptions -->
+    <rule ref="rulesets/java/design.xml/PositionLiteralsFirstInCaseInsensitiveComparisons"/>
+    <!-- 在 equals 中将文字放在第一个参数可以避免第二个参数为 Null 时抛出 NullPointerExceptions -->
+    <rule ref="rulesets/java/design.xml/PositionLiteralsFirstInComparisons"/>
+    <!-- 捕获并抛出一个新的异常时不应该丢失原始异常的相关信息，这样不利于跟踪异常信息 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_bestpractices.html#preservestacktrace -->
+    <rule ref="rulesets/java/design.xml/PreserveStackTrace"/>
+    <!-- Switch 语句应该包含一个默认的 Default 分支 -->
+    <rule ref="rulesets/java/design.xml/SwitchStmtsShouldHaveDefault"/>
+    <!-- 使用 isEmpty() 来确定集合元素的个数，而不是使用 size() -->
+    <rule ref="rulesets/java/design.xml/UseCollectionIsEmpty"/>
+    <!-- 在 Java5 以后对于可变的参数类型不要使用数组进行定义 -->
+    <!--<rule ref="rulesets/java/design.xml/UseVarargs"/>-->
+
+    <!-- 接收数组的构造函数和方法应该应该通过克隆复制对象，防止对现有数组的修改影响原始数组 -->
+    <rule ref="rulesets/java/sunsecure.xml/ArrayIsStoredDirectly"/>
+    <!-- 返回数组的拷贝而不是直接返回原始数组对象数据，避免外部调用时修改或删除原始数据 -->
+    <rule ref="rulesets/java/sunsecure.xml/MethodReturnsInternalArray"/>
+
+    <!-- 避免将 StringBuffer 定义为字段 -->
+    <rule ref="rulesets/java/strings.xml/AvoidStringBufferField"/>
+
+    <!-- See：https://pmd.github.io/pmd-6.0.0/pmd_rules_java_bestpractices.html#loosecoupling -->
+    <rule ref="rulesets/java/coupling.xml/LooseCoupling"/>
+
+    <!-- 考虑使用 Iterator 替换 Enumeration 的用法 -->
+    <rule ref="rulesets/java/migrating.xml/ReplaceEnumerationWithIterator"/>
+    <!-- 如果不需要考虑线程安全，使用 Map 替换 Hashtable 的用法 -->
+    <rule ref="rulesets/java/migrating.xml/ReplaceHashtableWithMap"/>
+    <!-- 如果不需要考虑线程安全，使用 ArrayList 替换 Vector 的用法 -->
+    <rule ref="rulesets/java/migrating.xml/ReplaceVectorWithList"/>
+
+    <!-- 避免将参数传递给方法或构造函数，而不实际在方法体中引用它们 -->
+    <rule ref="rulesets/java/unusedcode.xml/UnusedFormalParameter">
+        <properties>
+            <!-- 检查所有方法，包括非私有的，默认：false -->
+            <property name="checkAll" value="true"/>
+        </properties>
+    </rule>
+    <!-- 定义和分配了未使用的本地变量 -->
+    <rule ref="rulesets/java/unusedcode.xml/UnusedLocalVariable"/>
+    <!-- 定义和分配了未使用的私有变量 -->
+    <rule ref="rulesets/java/unusedcode.xml/UnusedPrivateField"/>
+    <!-- 未使用的私有方法 -->
+    <rule ref="rulesets/java/unusedcode.xml/UnusedPrivateMethod"/>
+
+    <!-- 避免导入未使用的 import 语句，防止不必要的依赖 -->
+    <rule ref="rulesets/java/imports.xml/UnusedImports"/>
+
+    <!-- 不要使用 printStackTrace() 方法记录异常信息，而应该使用 Logger 相关组件记录 -->
+    <rule ref="rulesets/java/logging-java.xml/AvoidPrintStackTrace"/>
+    <!-- 不要使用 System Print 来打印输出信息，而应该使用 Logger 相关组件记录 -->
+    <rule ref="rulesets/java/logging-java.xml/SystemPrintln"/>
+    <!-- 使用 Logger 对象记录日志时检查相关日志级别是否启用，避免不必要的字符串相关创建操作 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_bestpractices.html#guardlogstatement -->
+    <rule ref="rulesets/java/logging-jakarta-commons.xml/GuardLogStatement"/>
+
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_bestpractices.html#useassertequalsinsteadofasserttrue -->
+    <rule ref="rulesets/java/junit.xml/UseAssertEqualsInsteadOfAssertTrue"/>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_bestpractices.html#useassertnullinsteadofasserttrue -->
+    <rule ref="rulesets/java/junit.xml/UseAssertNullInsteadOfAssertTrue"/>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_bestpractices.html#useassertsameinsteadofasserttrue -->
+    <rule ref="rulesets/java/junit.xml/UseAssertSameInsteadOfAssertTrue"/>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_bestpractices.html#useasserttrueinsteadofassertequals -->
+    <rule ref="rulesets/java/junit.xml/UseAssertTrueInsteadOfAssertEquals"/>
+
+    <!-- endregion -->
+
+
+    <!-- region Code Style -->
+
+    <!-- 不需要显示的扩展 Object 类 -->
+    <rule ref="rulesets/java/basic.xml/ExtendsObject"/>
+    <!-- 有些循环可以简化成 while 循环 -->
+    <rule ref="rulesets/java/basic.xml/ForLoopShouldBeWhileLoop"/>
+
+    <!-- 检查抽象类的名称，必须以 Abstract 开头 -->
+    <rule ref="rulesets/java/naming.xml/AbstractNaming"/>
+    <!-- 避免在变量/方法/类/接口中使用 $ 符号 -->
+    <rule ref="rulesets/java/naming.xml/AvoidDollarSigns"/>
+    <!-- Boolean 类型的方法名称不要使用 get 前缀 -->
+    <!--<rule ref="rulesets/java/naming.xml/BooleanGetMethodName"/>-->
+    <!-- 类名必须以大写字母开头 -->
+    <rule ref="rulesets/java/naming.xml/ClassNamingConventions"/>
+    <!-- 对于泛型值引用的名称应该只限于一个大写字母 -->
+    <rule ref="rulesets/java/naming.xml/GenericsNaming"/>
+    <!-- 方法名始终以小写字母开头，并且不能包含下划线 -->
+    <rule ref="rulesets/java/naming.xml/MethodNamingConventions"/>
+    <!-- 接口或类没有定义包 -->
+    <rule ref="rulesets/java/naming.xml/NoPackage"/>
+    <!-- 检测包名是否包含大写，应该全小写 -->
+    <rule ref="rulesets/java/naming.xml/PackageCase"/>
+
+    <!-- 避免在 FinalClass 中定义 protected 的字段 -->
+    <rule ref="rulesets/java/design.xml/AvoidProtectedFieldInFinalClass"/>
+    <!-- 避免在 FinalClass 中定义 protected 的方法 -->
+    <rule ref="rulesets/java/design.xml/AvoidProtectedMethodInFinalClassNotExtending"/>
+    <!-- 在 if 表达式伴随 else 子句时，避免在 if 测试中使用否定表达 -->
+    <!--<rule ref="rulesets/java/design.xml/ConfusingTernary"/>-->
+    <!-- 抽象类中的空方法或自动生成的方法应标记为抽象的 -->
+    <rule ref="rulesets/java/design.xml/EmptyMethodInAbstractClassShouldBeAbstract"/>
+    <!-- 字段的定义应该放在方法/构建函数等的前面 -->
+    <rule ref="rulesets/java/design.xml/FieldDeclarationsShouldBeAtStartOfClass"/>
+    <!-- 避免创建不必要的返回结果变量 -->
+    <rule ref="rulesets/java/design.xml/UnnecessaryLocalBeforeReturn"/>
+
+    <!-- 调用父类的 super() 方法是一种良好的实践  -->
+    <rule ref="rulesets/java/controversial.xml/CallSuperInConstructor"/>
+    <!-- 当只有一个空的默认构造函数时不需要显示的声明定义 -->
+    <rule ref="rulesets/java/controversial.xml/UnnecessaryConstructor"/>
+    <!-- 方法应该只有一个退出点，应该是方法的最后一个语句 -->
+    <!--<rule ref="rulesets/java/controversial.xml/OnlyOneReturn"/>-->
+
+    <!-- 不要手动导入 java.lang 下面所有类这是没必要的 -->
+    <rule ref="rulesets/java/imports.xml/DontImportJavaLang"/>
+    <!-- 避免重复的引用 -->
+    <rule ref="rulesets/java/imports.xml/DuplicateImports"/>
+    <!-- 部分情况下导入类使用完全的包名路径是没有必要的 -->
+    <rule ref="rulesets/java/imports.xml/UnnecessaryFullyQualifiedName"/>
+
+    <!-- for 循环语句中要使用大括号，应避免直接使用缩进来表示 -->
+    <rule ref="rulesets/java/braces.xml/ForLoopsMustUseBraces"/>
+    <!-- if 语句块必须使用大括号 -->
+    <rule ref="rulesets/java/braces.xml/IfStmtsMustUseBraces"/>
+    <!-- if else 语句块必须使用大括号 -->
+    <rule ref="rulesets/java/braces.xml/IfElseStmtsMustUseBraces"/>
+    <!-- while 循环必须带大括号 -->
+    <rule ref="rulesets/java/braces.xml/WhileLoopsMustUseBraces"/>
+
+    <!-- 只赋值一次的局部变量可以声明为 final -->
+    <!--<rule ref="rulesets/java/optimizations.xml/LocalVariableCouldBeFinal"/>-->
+    <!-- 检查变量是否过早的定义 -->
+    <rule ref="rulesets/java/optimizations.xml/PrematureDeclaration"/>
+
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_codestyle.html#unnecessarymodifier -->
+    <rule ref="rulesets/java/unnecessary.xml/UnnecessaryModifier"/>
+    <!-- 避免使用不必要的返回语句 -->
+    <rule ref="rulesets/java/unnecessary.xml/UnnecessaryReturn"/>
+    <!-- 删除无用的括号 -->
+    <rule ref="rulesets/java/unnecessary.xml/UselessParentheses"/>
+    <!-- 同一个类中对于 this 关键字的使用是否正确 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_codestyle.html#uselessqualifiedthis -->
+    <rule ref="rulesets/java/unnecessary.xml/UselessQualifiedThis"/>
+    <!-- endregion -->
+
+
+    <!-- region Design -->
+
+    <!-- 有时两个 if 分支语句可以合并为一个 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#collapsibleifstatements -->
+    <rule ref="rulesets/java/basic.xml/CollapsibleIfStatements"/>
+    <!-- 简化三元表达式的写法 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#simplifiedternary -->
+    <rule ref="rulesets/java/basic.xml/SimplifiedTernary"/>
+
+    <!-- 没有任何方法的抽象类：如果抽象类没有提供任何的方法，它可能只是一个不可被实例化的
+    数据容器，在这种状况下，更好的方法是使用私有的或受保护的构造器以阻止实例化可以让类避免
+    带有欺骗性的抽象 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#abstractclasswithoutanymethod -->
+    <rule ref="rulesets/java/design.xml/AbstractClassWithoutAnyMethod"/>
+    <!-- 避免创建嵌套过深的 if 语句 -->
+    <rule ref="rulesets/java/design.xml/AvoidDeeplyNestedIfStmts">
+        <priority>1</priority>
+        <properties>
+            <!-- 嵌套深度，默认：3 -->
+            <property name="problemDepth" value="4"/>
+        </properties>
+    </rule>
+    <!-- 类只有 private 的构造函数时应该设置为 final -->
+    <rule ref="rulesets/java/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal"/>
+    <!-- 定义为 final 的字段要考虑加上 static 修饰 -->
+    <rule ref="rulesets/java/design.xml/FinalFieldCouldBeStatic"/>
+    <!-- 被声明为 private 的字段一旦被赋值后就不再改变，那么可以标识为 final -->
+    <!--<rule ref="rulesets/java/design.xml/ImmutableField"/>-->
+    <!-- 使用相反的操作而否定整个表达与逻辑运算符 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#logicinversion -->
+    <rule ref="rulesets/java/design.xml/LogicInversion"/>
+    <!-- 避免布尔表达式中不必要的比较，影响可读性 -->
+    <rule ref="rulesets/java/design.xml/SimplifyBooleanExpressions">
+        <priority>1</priority>
+    </rule>
+    <!-- 在返回布尔时避免不必要的if语句，条件测试的结果可以返回 -->
+    <rule ref="rulesets/java/design.xml/SimplifyBooleanReturns">
+        <priority>1</priority>
+    </rule>
+    <!-- 没有必要在 instanceof 中检查 null，当对象为 null 时 instanceof 关键字返回 false -->
+    <rule ref="rulesets/java/design.xml/SimplifyConditional"/>
+    <!-- 只作用于单个方法的变量不要定义为全局变量 -->
+    <rule ref="rulesets/java/design.xml/SingularField"/>
+    <!-- switch 表达式的 case 块中出现很高比例的表达式语句表明 switch 表达式做了太多的工作 -->
+    <rule ref="rulesets/java/design.xml/SwitchDensity"/>
+    <!-- 一个类如果只有 static 方法，考虑将类变为工具类 -->
+    <rule ref="rulesets/java/design.xml/UseUtilityClass"/>
+
+    <!-- 计算类中属性/本地变量/返回类型的数量，超过指定的数值（默认：20）则表示当前类的依赖耦合度较高 -->
+    <rule ref="rulesets/java/coupling.xml/CouplingBetweenObjects"/>
+    <!-- 限制导入对象的个数，过多的导入对象代表着类的依赖和耦合度更多高 -->
+    <rule ref="rulesets/java/coupling.xml/ExcessiveImports">
+        <properties>
+            <property name="minimum" value="80"/>
+        </properties>
+    </rule>
+
+    <!-- 代码复杂度（圈复杂度），圈复杂度过于复杂的代码片段非常不利维护 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#cyclomaticcomplexity -->
+    <rule ref="rulesets/java/codesize.xml/CyclomaticComplexity">
+        <priority>2</priority>
+    </rule>
+    <!-- 类的代码行数过多 -->
+    <rule ref="rulesets/java/codesize.xml/ExcessiveClassLength">
+        <properties>
+            <property name="minimum" value="1000"/>
+        </properties>
+    </rule>
+    <!-- 限制一个类的公开方法和属性的个数，默认为：45 -->
+    <rule ref="rulesets/java/codesize.xml/ExcessivePublicCount">
+        <properties>
+            <property name="minimum" value="80"/>
+        </properties>
+    </rule>
+
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#uselessoverridingmethod -->
+    <rule ref="rulesets/java/unnecessary.xml/UselessOverridingMethod"/>
+
+    <!-- 当 public 方法超过 3 个字符串类型的参数时考虑将参数封装为数据对象 -->
+    <!--<rule ref="rulesets/java/controversial.xml/UseObjectForClearerAPI"/>-->
+
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#avoidcatchinggenericexception -->
+    <!--<rule ref="rulesets/java/strictexception.xml/AvoidCatchingGenericException"/>-->
+    <!-- 避免只是捕获异常并直接抛出异常没有任何变化 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#avoidrethrowingexception -->
+    <rule ref="rulesets/java/strictexception.xml/AvoidRethrowingException"/>
+    <!-- 避免捕获异常后重新创建异常对象时又使用相同的异常对象这样是没什么意义的 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#avoidthrowingnewinstanceofsameexception -->
+    <rule ref="rulesets/java/strictexception.xml/AvoidThrowingNewInstanceOfSameException"/>
+    <!-- 避免直接抛出 NullPointerException 考虑使用 IllegalArgumentException 代替 -->
+    <rule ref="rulesets/java/strictexception.xml/AvoidThrowingNullPointerException"/>
+    <!-- 避免直接抛出一个原生的异常类型，如：RuntimeException, Throwable, Exception, or Error
+     最好是使用具体的子类异常类 -->
+    <rule ref="rulesets/java/strictexception.xml/AvoidThrowingRawExceptionTypes"/>
+    <!--  Error 对象是系统异常，不要扩展它 -->
+    <rule ref="rulesets/java/strictexception.xml/DoNotExtendJavaLangError"/>
+    <!-- 不要使用异常来作为流程控制 -->
+    <rule ref="rulesets/java/strictexception.xml/ExceptionAsFlowControl"/>
+    <!-- 方法或构造函数不应该直接抛出 java.lang.Exception -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#signaturedeclarethrowsexception -->
+    <!--<rule ref="rulesets/java/strictexception.xml/SignatureDeclareThrowsException"/>-->
+
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_design.html#simplifybooleanassertion -->
+    <rule ref="rulesets/java/junit.xml/SimplifyBooleanAssertion"/>
+
+    <!-- endregion -->
+
+
+    <!-- region Error Prone -->
+
+    <!-- https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#avoidbranchingstatementaslastinloop -->
+    <rule ref="rulesets/java/basic.xml/AvoidBranchingStatementAsLastInLoop"/>
+    <!-- BigDecimal 对象的精度问题 -->
+    <rule ref="rulesets/java/basic.xml/AvoidDecimalLiteralsInBigDecimalConstructor">
+        <priority>1</priority>
+    </rule>
+    <!-- 使用多个一元运算符可能是有问题的或者令人疑惑，考虑简化表达式 -->
+    <rule ref="rulesets/java/basic.xml/AvoidMultipleUnaryOperators"/>
+    <!-- 整数不应该从 0 开始，因为这会被解释为 8 进制值 -->
+    <rule ref="rulesets/java/basic.xml/AvoidUsingOctalValues">
+        <priority>1</priority>
+    </rule>
+    <!-- 不正确的空检查 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#brokennullcheck -->
+    <rule ref="rulesets/java/basic.xml/BrokenNullCheck">
+        <priority>1</priority>
+    </rule>
+    <rule ref="rulesets/java/basic.xml/ClassCastExceptionWithToArray">
+        <priority>1</priority>
+    </rule>
+    <rule ref="rulesets/java/basic.xml/DontUseFloatTypeForLoopIndices"/>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#jumbledincrementer -->
+    <rule ref="rulesets/java/basic.xml/JumbledIncrementer">
+        <priority>1</priority>
+    </rule>
+    <!-- 非空检查的顺序是不正确的 -->
+    <rule ref="rulesets/java/basic.xml/MisplacedNullCheck">
+        <priority>1</priority>
+    </rule>
+    <!-- 重写 equals 方法必须也重写 hashcode 方法 -->
+    <rule ref="rulesets/java/basic.xml/OverrideBothEqualsAndHashcode">
+        <priority>1</priority>
+    </rule>
+    <!-- 避免在 finally 中进行 return -->
+    <rule ref="rulesets/java/basic.xml/ReturnFromFinallyBlock"/>
+    <rule ref="rulesets/java/basic.xml/UnconditionalIfStatement">
+        <priority>1</priority>
+    </rule>
+
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#assignmenttononfinalstatic -->
+    <rule ref="rulesets/java/design.xml/AssignmentToNonFinalStatic"/>
+    <!-- 捕获的异常都应该在 catch 块中进行处理 -->
+    <rule ref="rulesets/java/design.xml/AvoidInstanceofChecksInCatchClause">
+        <priority>1</priority>
+    </rule>
+    <!-- 避免与 Double、Float 的 NaN 进行比较，由于在比较浮点数时缺少表示精度，这很可能导致逻辑错误 -->
+    <rule ref="rulesets/java/design.xml/BadComparison">
+        <priority>1</priority>
+    </rule>
+    <!-- 关闭相关资源的使用 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#closeresource -->
+    <rule ref="rulesets/java/design.xml/CloseResource">
+        <priority>1</priority>
+        <properties>
+            <!-- 设置检查未关闭资源的类型 -->
+            <property name="types"
+                      value="java.sql.Connection,java.sql.Statement,java.sql.ResultSet,java.io.FileInputStream,java.io.FileOutputStream,java.io.FileReader,java.io.FileWriter"/>
+        </properties>
+    </rule>
+    <!-- 字符串的比较不能使用 == -->
+    <rule ref="rulesets/java/design.xml/CompareObjectsWithEquals">
+        <priority>1</priority>
+    </rule>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#constructorcallsoverridablemethod -->
+    <rule ref="rulesets/java/design.xml/ConstructorCallsOverridableMethod"/>
+    <rule ref="rulesets/java/design.xml/EqualsNull">
+        <priority>1</priority>
+    </rule>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#idempotentoperations -->
+    <rule ref="rulesets/java/design.xml/IdempotentOperations"/>
+    <rule ref="rulesets/java/design.xml/InstantiationToGetClass">
+        <priority>1</priority>
+    </rule>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#missingbreakinswitch -->
+    <rule ref="rulesets/java/design.xml/MissingBreakInSwitch"/>
+    <!-- 具有私有构造函数的类但没有任何静态方法或字段这样是不能使用的 -->
+    <rule ref="rulesets/java/design.xml/MissingStaticMethodInNonInstantiatableClass">
+        <priority>1</priority>
+    </rule>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#noncaselabelinswitchstatement -->
+    <rule ref="rulesets/java/design.xml/NonCaseLabelInSwitchStatement"/>
+    <!-- https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#nonstaticinitializer -->
+    <rule ref="rulesets/java/design.xml/NonStaticInitializer"/>
+    <!-- 对于返回数组的任何方法，最好返回空数组而不是 null -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#returnemptyarrayratherthannull -->
+    <rule ref="rulesets/java/design.xml/ReturnEmptyArrayRatherThanNull">
+        <priority>3</priority>
+    </rule>
+    <rule ref="rulesets/java/design.xml/SingleMethodSingleton"/>
+    <rule ref="rulesets/java/design.xml/SingletonClassReturningNewInstance"/>
+
+    <!-- 避免在操作运算中赋值，这会使代码更复杂，更难阅读 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#assignmentinoperand -->
+    <rule ref="rulesets/java/controversial.xml/AssignmentInOperand"/>
+    <rule ref="rulesets/java/controversial.xml/DoNotCallGarbageCollectionExplicitly"/>
+    <rule ref="rulesets/java/controversial.xml/DontImportSun"/>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#nullassignment -->
+    <rule ref="rulesets/java/controversial.xml/NullAssignment"/>
+    <rule ref="rulesets/java/controversial.xml/SuspiciousOctalEscape">
+        <priority>1</priority>
+    </rule>
+
+    <!-- assert 关键字在 java 新版本中是关键字 -->
+    <rule ref="rulesets/java/migrating.xml/AvoidAssertAsIdentifier"/>
+    <!-- enum 为关键字 -->
+    <rule ref="rulesets/java/migrating.xml/AvoidEnumAsIdentifier"/>
+
+    <!-- 正常情况下代码不应该抛出 NullPointerExceptions -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#avoidcatchingnpe -->
+    <rule ref="rulesets/java/strictexception.xml/AvoidCatchingNPE"/>
+    <!-- 直接捕获 Throwable 是不建议的，因为 Throwable 对象太宽泛了 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#avoidcatchingthrowable -->
+    <rule ref="rulesets/java/strictexception.xml/AvoidCatchingThrowable"/>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#avoidlosingexceptioninformation -->
+    <rule ref="rulesets/java/strictexception.xml/AvoidLosingExceptionInformation"/>
+    <rule ref="rulesets/java/strictexception.xml/DoNotThrowExceptionInFinally"/>
+
+    <!-- 包含多个重复的字符串变量时（默认最大允许重复值：4），考虑将字符串变量定义为常量这样更便于维护 -->
+    <rule ref="rulesets/java/strings.xml/AvoidDuplicateLiterals">
+        <properties>
+            <!-- 忽略注解 -->
+            <property name="skipAnnotations" value="true"/>
+        </properties>
+    </rule>
+    <!-- 不要使用 char 来初始化 StringBuffer，char 会转换为 int 实际变为在设置 StringBuffer 空间大小 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#stringbufferinstantiationwithchar -->
+    <rule ref="rulesets/java/strings.xml/StringBufferInstantiationWithChar"/>
+    <!-- equals 比较时使用了多余的大小写转换 -->
+    <rule ref="rulesets/java/strings.xml/UnnecessaryCaseChange"/>
+    <rule ref="rulesets/java/strings.xml/UseEqualsToCompareStrings"/>
+
+    <!-- 字段名和方法名不要相同 -->
+    <rule ref="rulesets/java/naming.xml/AvoidFieldNameMatchingMethodName">
+        <priority>1</priority>
+    </rule>
+    <!-- 字段名和类名相同 -->
+    <rule ref="rulesets/java/naming.xml/AvoidFieldNameMatchingTypeName"/>
+    <rule ref="rulesets/java/naming.xml/MethodWithSameNameAsEnclosingClass">
+        <priority>1</priority>
+    </rule>
+    <rule ref="rulesets/java/naming.xml/SuspiciousEqualsMethodName">
+        <priority>1</priority>
+    </rule>
+    <rule ref="rulesets/java/naming.xml/SuspiciousHashcodeMethodName">
+        <priority>1</priority>
+    </rule>
+
+    <rule ref="rulesets/java/clone.xml/CloneMethodMustBePublic"/>
+    <rule ref="rulesets/java/clone.xml/CloneMethodMustImplementCloneable"/>
+    <rule ref="rulesets/java/clone.xml/CloneMethodReturnTypeMustMatchClassName"/>
+    <rule ref="rulesets/java/clone.xml/CloneThrowsCloneNotSupportedException"/>
+    <rule ref="rulesets/java/clone.xml/ProperCloneImplementation"/>
+
+    <rule ref="rulesets/java/j2ee.xml/DoNotCallSystemExit"/>
+
+    <rule ref="rulesets/java/empty.xml/EmptyCatchBlock">
+        <priority>1</priority>
+    </rule>
+    <rule ref="rulesets/java/empty.xml/EmptyFinallyBlock">
+        <priority>1</priority>
+    </rule>
+    <rule ref="rulesets/java/empty.xml/EmptyIfStmt"/>
+    <rule ref="rulesets/java/empty.xml/EmptyInitializer"/>
+    <rule ref="rulesets/java/empty.xml/EmptyStatementBlock"/>
+    <rule ref="rulesets/java/empty.xml/EmptyStatementNotInLoop"/>
+    <rule ref="rulesets/java/empty.xml/EmptySwitchStatements"/>
+    <rule ref="rulesets/java/empty.xml/EmptySynchronizedBlock"/>
+    <rule ref="rulesets/java/empty.xml/EmptyTryBlock"/>
+    <rule ref="rulesets/java/empty.xml/EmptyWhileStmt"/>
+
+    <!-- 不要显示调用 Object.finalize() 方法 -->
+    <rule ref="rulesets/java/finalizers.xml/AvoidCallingFinalize"/>
+    <!-- 删除空的 finalize 方法 -->
+    <rule ref="rulesets/java/finalizers.xml/EmptyFinalizer">
+        <priority>1</priority>
+    </rule>
+    <rule ref="rulesets/java/finalizers.xml/FinalizeDoesNotCallSuperFinalize">
+        <priority>1</priority>
+    </rule>
+    <rule ref="rulesets/java/finalizers.xml/FinalizeOnlyCallsSuperFinalize">
+        <priority>1</priority>
+    </rule>
+    <rule ref="rulesets/java/finalizers.xml/FinalizeOverloaded">
+        <priority>1</priority>
+    </rule>
+    <rule ref="rulesets/java/finalizers.xml/FinalizeShouldBeProtected">
+        <priority>1</priority>
+    </rule>
+
+    <rule ref="rulesets/java/imports.xml/ImportFromSamePackage">
+        <priority>2</priority>
+    </rule>
+
+    <!--<rule ref="rulesets/java/logging-java.xml/InvalidSlf4jMessageFormat"/>-->
+    <rule ref="rulesets/java/logging-java.xml/LoggerIsNotStaticFinal"/>
+    <!-- 每个类只使用一个日志记录器 -->
+    <rule ref="rulesets/java/logging-java.xml/MoreThanOneLogger"/>
+
+    <rule ref="rulesets/java/javabeans.xml/MissingSerialVersionUID"/>
+
+    <!-- 不必要的临时转换 -->
+    <rule ref="rulesets/java/unnecessary.xml/UnnecessaryConversionTemporary"/>
+    <rule ref="rulesets/java/unnecessary.xml/UnusedNullCheckInEquals"/>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_errorprone.html#uselessoperationonimmutable -->
+    <rule ref="rulesets/java/unnecessary.xml/UselessOperationOnImmutable">
+        <priority>1</priority>
+    </rule>
+
+    <!-- 多余的 boolean assert -->
+    <rule ref="rulesets/java/junit.xml/UnnecessaryBooleanAssertion"/>
+
+    <!-- endregion -->
+
+    <!-- region Multithreading -->
+
+    <rule ref="rulesets/java/basic.xml/AvoidThreadGroup"/>
+    <!-- https://pmd.github.io/pmd-6.0.0/pmd_rules_java_multithreading.html#dontcallthreadrun -->
+    <rule ref="rulesets/java/basic.xml/DontCallThreadRun"/>
+
+    <!-- 避免直接在方法上添加 synchronized 关键字，对于同步操作应该尽可能限制到最小的粒度 -->
+    <!-- https://pmd.github.io/pmd-6.0.0/pmd_rules_java_multithreading.html#avoidsynchronizedatmethodlevel -->
+    <rule ref="rulesets/java/design.xml/AvoidSynchronizedAtMethodLevel"/>
+    <!-- 非线程安全的单例模式 -->
+    <rule ref="rulesets/java/design.xml/NonThreadSafeSingleton"/>
+    <rule ref="rulesets/java/design.xml/UnsynchronizedStaticDateFormatter">
+        <priority>1</priority>
+    </rule>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_multithreading.html#usenotifyallinsteadofnotify -->
+    <rule ref="rulesets/java/design.xml/UseNotifyAllInsteadOfNotify"/>
+
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_multithreading.html#avoidusingvolatile -->
+    <rule ref="rulesets/java/controversial.xml/AvoidUsingVolatile"/>
+
+    <!-- 不要继承 Thread 类而应该使用 Runnable，J2EE 规范明确禁止 Thread -->
+    <rule ref="rulesets/java/j2ee.xml/DoNotUseThreads"/>
+
+    <!-- endregion -->
+
+
+    <!-- region Performance -->
+
+    <rule ref="rulesets/java/design.xml/OptimizableToArrayCall"/>
+    <!-- Switch 语句用于复杂的分支语句，相对简单的分支使用 if 语句代替。默认超过 3 个分支项可以使用 Switch -->
+    <rule ref="rulesets/java/design.xml/TooFewBranchesForASwitchStatement"/>
+
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_performance.html#bigintegerinstantiation -->
+    <rule ref="rulesets/java/basic.xml/BigIntegerInstantiation"/>
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_performance.html#booleaninstantiation -->
+    <rule ref="rulesets/java/basic.xml/BooleanInstantiation"/>
+
+    <!-- 字符串的转换不要使用「空字符串 + 数字」这样的形式，如："" + 123 -->
+    <rule ref="rulesets/java/optimizations.xml/AddEmptyString">
+        <priority>2</priority>
+    </rule>
+    <!-- 避免数组循环，使用 System.arraycopy 方法更好 -->
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_performance.html#avoidarrayloops -->
+    <rule ref="rulesets/java/optimizations.xml/AvoidArrayLoops"/>
+    <!-- 不必要的字段初始化赋值操作 -->
+    <rule ref="rulesets/java/optimizations.xml/RedundantFieldInitializer"/>
+    <!-- 不必要的对象创建包装器 -->
+    <rule ref="rulesets/java/optimizations.xml/UnnecessaryWrapperObjectCreation"/>
+    <!-- 不考虑线程安全的情况下使用 ArrayList 比 Vector 更好 -->
+    <rule ref="rulesets/java/optimizations.xml/UseArrayListInsteadOfVector"/>
+    <rule ref="rulesets/java/optimizations.xml/UseArraysAsList"/>
+
+    <rule ref="rulesets/java/strings.xml/ConsecutiveLiteralAppends"/>
+    <!-- 效率不高的字符串空检查 -->
+    <rule ref="rulesets/java/strings.xml/InefficientEmptyStringCheck"/>
+    <!-- 效率不高的 StringBuffer/StringBuilder 使用方式 -->
+    <rule ref="rulesets/java/strings.xml/InefficientStringBuffering"/>
+    <!-- 在预计字符串至少会有多长（长度）下，建议设置 StringBuffer/StringBuilder 初始大小 -->
+    <rule ref="rulesets/java/strings.xml/InsufficientStringBufferDeclaration"/>
+    <rule ref="rulesets/java/strings.xml/StringInstantiation"/>
+    <rule ref="rulesets/java/strings.xml/StringToString"/>
+    <rule ref="rulesets/java/strings.xml/UseIndexOfChar"/>
+    <rule ref="rulesets/java/strings.xml/UselessStringValueOf"/>
+    <rule ref="rulesets/java/strings.xml/UseStringBufferLength"/>
+
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_performance.html#byteinstantiation -->
+    <rule ref="rulesets/java/migrating.xml/ByteInstantiation"/>
+    <rule ref="rulesets/java/migrating.xml/IntegerInstantiation"/>
+    <rule ref="rulesets/java/migrating.xml/LongInstantiation"/>
+    <rule ref="rulesets/java/migrating.xml/ShortInstantiation"/>
+
+    <!-- endregion -->
+
+
+</ruleset>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset name="Custom ruleset"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>
+        PMD 补充规则为了适应部分规则在 IDEA PMD 插件中暂时不支持（插件引用的 PMD 包版本不是最新的），而
+        通过 Maven 插件可以支持的情况（在 Maven 插件中可以指定 PMD 包依赖的版本）。
+    </description>
+
+    <!-- region Error Prone -->
+
+    <rule ref="category/java/errorprone.xml/DoNotExtendJavaLangThrowable"/>
+
+    <!-- endregion -->
+
+
+    <!-- region Performance -->
+
+    <!-- See: https://pmd.github.io/pmd-6.0.0/pmd_rules_java_performance.html#avoidfilestream -->
+    <!-- Java 1.7+ -->
+    <rule ref="category/java/performance.xml/AvoidFileStream"/>
+
+    <!-- endregion -->
+
+
+</ruleset>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty scope="context" name="springAppName"
+                    source="spring.application.name" />
+    <property name="LOG_FILE_NAME_PATTERN" value="logs/auth.%d{yyyy-MM-dd}.%i"/>
+    <!-- 日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%c){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <property name="FILE_LOG_PATTERN"
+              value="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %c : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!--输出到文件-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_NAME_PATTERN}.log</fileNamePattern>
+            <!-- 日志保留天数 -->
+            <maxHistory>366</maxHistory>
+            <!-- 日志文件上限大小，达到指定大小后删除旧的日志文件 -->
+            <totalSizeCap>2GB</totalSizeCap>
+
+            <!-- 每个日志文件的最大值 -->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <!--<appender name="logstash" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>${LOG_FILE_NAME_PATTERN}.json</fileNamePattern>-->
+            <!--&lt;!&ndash; 日志保留天数 &ndash;&gt;-->
+            <!--<maxHistory>366</maxHistory>-->
+            <!--&lt;!&ndash; 日志文件上限大小，达到指定大小后删除旧的日志文件 &ndash;&gt;-->
+            <!--<totalSizeCap>2GB</totalSizeCap>-->
+
+            <!--&lt;!&ndash; 每个日志文件的最大值 &ndash;&gt;-->
+            <!--<timeBasedFileNamingAndTriggeringPolicy-->
+                    <!--class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+                <!--<maxFileSize>10MB</maxFileSize>-->
+            <!--</timeBasedFileNamingAndTriggeringPolicy>-->
+
+        <!--</rollingPolicy>-->
+        <!--<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">-->
+            <!--<jsonFactoryDecorator class="com.hanboard.educloud.framework.web.log.MyJsonFactoryDecorator"/>-->
+            <!--<providers>-->
+                <!--<pattern>-->
+                    <!--<pattern>-->
+                        <!--{-->
+                        <!--"time": "%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}",-->
+                        <!--"level": "%level",-->
+                        <!--"response_service": "${springAppName:-}",-->
+                        <!--"request_server" : "%X{request_server:-}",-->
+                        <!--"trace": "%X{X-B3-TraceId:-}",-->
+                        <!--"span": "%X{X-B3-SpanId:-}",-->
+                        <!--"parent_span" : "%X{parent_spanId:-}",-->
+                        <!--"exportable": "%X{X-Span-Export:-}",-->
+                        <!--"pid": "${PID:- }",-->
+                        <!--"thread": "%thread",-->
+                        <!--"http_uri": "%X{http_uri:-}",-->
+                        <!--"client_ip": "%X{client_ip:-}",-->
+                        <!--"http_method": "%X{http_method:-}",-->
+                        <!--"param_data":"%X{param_data}",-->
+                        <!--"device_type":"%X{device_type}",-->
+                        <!--"api_method":"%X{api_method}",-->
+                        <!--"request_header":"%X{request_header}",-->
+                        <!--"time_consume":"%X{time_consume}",-->
+                        <!--"status_code": "%X{status_code}",-->
+                        <!--"request_server": "%X{request_server}",-->
+                        <!--"stack_trace": "%exception{5}",-->
+                        <!--"return_data": "%message"-->
+                        <!--}-->
+                    <!--</pattern>-->
+                <!--</pattern>-->
+            <!--</providers>-->
+        <!--</encoder>-->
+
+    <!--</appender>-->
+
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+        <!--<appender-ref ref="logstash"/>-->
+    </root>
+
+    <!-- region 根据不同的环境设置不同的日志输出级别 -->
+    <springProfile name="default,local,dev,test">
+        <logger name="com.hanboard.educloud.auth" level="debug"/>
+    </springProfile>
+
+    <springProfile name="product">
+        <logger name="com.hanboard.educloud.auth" level="info"/>
+    </springProfile>
+
+    <!-- endregion -->
+
+</configuration>
